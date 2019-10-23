@@ -65,6 +65,21 @@ var initialize = function () {
              object = Object.create(rect);
              object.init(canvas);
                 arr.push (object);
+             object = Object.create(rect);
+             object.init(canvas);
+                   arr.push (object);
+                   object = Object.create(rect);
+             object.init(canvas);
+                arr.push (object);
+                object = Object.create(rect);
+             object.init(canvas);
+                arr.push (object);
+                object = Object.create(rect);
+             object.init(canvas);
+                arr.push (object);
+                object = Object.create(rect);
+             object.init(canvas);
+                arr.push (object);
                 repeater();
 }
 
@@ -83,8 +98,8 @@ let rect = {
     this.canvas = canvas;
     this.x = Math.random() * this.canvas.getWidth();
     this.y = Math.random() * this.canvas.getHeight();
-    this.h = h;
-    this.w = w;
+    this.h = Math.random() * 9 + 3; 
+    this.w = Math.random() * 9 + 3;
     this.dx = Math.random() * 5;
     this.dy = Math.random() * 5;
     this.color = getRndColor();
