@@ -39,16 +39,14 @@ var redraw = function () {
     canvas.prep();      // prep canvas with background color
     for (let i = 0; i < bubbles.length; i++) {
         bubbles[i].move();
-        for (let j = i + 1; j < bubbles.length; j++) {
-           if (bubbles[i].hitTest(bubbles[j]));
-           
+    for (let j = i + 1; j < bubbles.length; j++) {
         }
-        bubbles[i].draw();
+    bubbles[i].draw();
     }
 }
 
 var repeater = function () {
-    setInterval(redraw, 10);
+    setInterval(redraw, 15);
 }
 
 //Create Canvas and bubbles's
@@ -102,13 +100,37 @@ move() {
             
     this.x += this.dx;
     this.y += this.dy;
+    
+    //
+    for (let j = 0; j < bubbles.length; j++){
+        if (this === bubbles[j]) {
+            continue;
+        } else {
+            if (this.hit(bubbles[j])) { //Når en bubble rammer, udregnes arealet
+                let a1 = this.getArea();
+                let a2 = bubbles[j].getArea();
+                a1 += a2;
+                a1 /= Math.PI;
+                a1 = Math.sqrt(a1);
+                if (this.r >= bubbles[j].r) { //Hvis radius er større eller =, bliver de mindre spist
+                    this.r = a1;
+                    bubbles.splice(j, 1);
+                } else { 
+                    bubbles[j].r = a1;
+                }
+            }
+        }
+    }
+    if (bubbles.length === 1) {
+        window.alert('No more bubbles left :(');
+    }
 },
 
 getArea() {
     return Math.PI * Math.pow(this.r, 2);
 },
 
-hitTest(ob) {
+hit(ob) {
     return Math.sqrt(Math.pow(this.x - ob.x, 2) + Math.pow(this.y - ob.y, 2)) <= (this.r + ob.r)
 },
 

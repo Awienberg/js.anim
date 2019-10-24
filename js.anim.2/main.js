@@ -30,58 +30,36 @@ let Canvas = {
     }
 }
 
-var arr = [];
+var rects = [];
 var canvas;
+var COUNT = 10;
 
 var redraw = function () {
     canvas.clear();     // clear canvas
     canvas.prep();      // prep canvas with background color
-    for (let rect of arr) {
-    rect.move();  // change coordinates
-    rect.draw();  // draw again with new coordinates
+    for (let i = 0; i < rects.length; i++) {
+        rects[i].move();
+    for (let j = i + 1; j < rects.length; j++) {
+        }
+        rects[i].draw();
     }
 }
 
 var repeater = function () {
-    setInterval(redraw, 10);
+    setInterval(redraw, 15);
 }
 
 //Create Canvas and rect's
 var initialize = function () {
     canvas = Object.create(Canvas);
     canvas.init('myCanvas', '#000');
-    let object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-             object = Object.create(rect);
-             object.init(canvas);
-                arr.push (object);
-                repeater();
-}
+    for (let i = 0; i < COUNT; i += 1) {
+        let rect = Object.create(Umo);
+        rect.init(canvas, getRndColor());
+        rects.push(rect);
+    }
+    repeater();
+};
 
 window.addEventListener('load', initialize);
 
@@ -93,8 +71,8 @@ let getRndColor = function() {
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
-let rect = {
-    init(canvas, h, w) {
+let Umo = {
+    init(canvas) {
     this.canvas = canvas;
     this.x = Math.random() * this.canvas.getWidth();
     this.y = Math.random() * this.canvas.getHeight();
@@ -114,14 +92,46 @@ draw() {
 },
             
 move() {
-    if (this.x + this.dx > this.canvas.getWidth()
-        || this.x + this.dx < 0)
+    if (this.x + this.dx > this.canvas.getWidth() || this.x + this.dx < 0)
     this.dx = -this.dx;
-    if (this.y + this.dy > this.canvas.getHeight()
-        || this.y + this.dy < 0)
+
+    if (this.y + this.dy > this.canvas.getHeight() || this.y + this.dy < 0)
     this.dy = -this.dy;
             
     this.x += this.dx;
     this.y += this.dy;
+    
+    //
+    for (let j = 0; j < rects.length; j++){
+        if (this === rects[j]) {
+            continue;
+        } else {
+            if (this.hit(rects[j])) { //Når et object rammer, udregnes arealet
+                let a1 = this.getArea();
+                let a2 = rects[j].getArea();
+                a1 += a2;
+                a1 /= Math.PI;
+                a1 = Math.sqrt(a1);
+                if (this.r >= rects[j].r) { //Hvis radius er større eller =, bliver de mindre spist
+                    this.r = a1;
+                    rects.splice(j, 1);
+                } else { 
+                    rects[j].r = a1;
+                }
+            }
+        }
+    }
+    if (rects.length === 1) {
+        window.alert('No more objects left :(');
+    }
 },
+
+getArea() {
+    return Math.PI * Math.pow(this.r, 2);
+},
+
+hit(ob) {
+    return Math.sqrt(Math.pow(this.x - ob.x, 2) + Math.pow(this.y - ob.y, 2)) <= (this.r + ob.r)
+},
+
 }

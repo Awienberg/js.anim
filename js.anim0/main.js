@@ -39,14 +39,14 @@ var redraw = function () {
     canvas.prep();      // prep canvas with background color
     for (let i = 0; i < bubbles.length; i++) {
         bubbles[i].move();
-        for (let j = i + 1; j < bubbles.length; j++) {
+    for (let j = i + 1; j < bubbles.length; j++) {
         }
         bubbles[i].draw();
     }
 }
 
 var repeater = function () {
-    setInterval(redraw, 10);
+    setInterval(redraw, 15);
 }
 
 //Create Canvas and bubble's
