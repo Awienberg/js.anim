@@ -46,7 +46,7 @@ var repeater = function () {
     setInterval(redraw, 10);
 }
 
-//Create Canvas and disk's
+//Create Canvas and rect's
 var initialize = function () {
     canvas = Object.create(Canvas);
     canvas.init('myCanvas', '#000');
@@ -67,17 +67,17 @@ var initialize = function () {
                 arr.push (object);
              object = Object.create(rect);
              object.init(canvas);
-                   arr.push (object);
-                   object = Object.create(rect);
+                arr.push (object);
+             object = Object.create(rect);
              object.init(canvas);
                 arr.push (object);
-                object = Object.create(rect);
+             object = Object.create(rect);
              object.init(canvas);
                 arr.push (object);
-                object = Object.create(rect);
+             object = Object.create(rect);
              object.init(canvas);
                 arr.push (object);
-                object = Object.create(rect);
+             object = Object.create(rect);
              object.init(canvas);
                 arr.push (object);
                 repeater();
@@ -85,7 +85,7 @@ var initialize = function () {
 
 window.addEventListener('load', initialize);
 
-//Give the object's a random color
+//Give the rect's a random color
 let getRndColor = function() {
     var r = 255*Math.random()|0,
         g = 255*Math.random()|0,

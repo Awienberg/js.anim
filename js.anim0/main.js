@@ -28,17 +28,20 @@ let Canvas = {
     getWidth () {
         return this.canvas.width;
     }
-}
+};
 
-var arr = [];
+var bubbles = [];
 var canvas;
+var COUNT = 10;
 
 var redraw = function () {
     canvas.clear();     // clear canvas
     canvas.prep();      // prep canvas with background color
-    for (let umo of arr) {
-    umo.move();  // change coordinates
-    umo.draw();  // draw again with new coordinates
+    for (let i = 0; i < bubbles.length; i++) {
+        bubbles[i].move();
+        for (let j = i + 1; j < bubbles.length; j++) {
+        }
+        bubbles[i].draw();
     }
 }
 
@@ -46,46 +49,22 @@ var repeater = function () {
     setInterval(redraw, 10);
 }
 
-//Create Canvas and Umo's
+//Create Canvas and bubble's
 var initialize = function () {
     canvas = Object.create(Canvas);
     canvas.init('myCanvas', '#000');
-    let bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                bubbles = Object.create(Umo);
-                bubbles.init(canvas);
-                arr.push(bubbles);
-                repeater();
-}
+    
+    for (let i = 0; i < COUNT; i += 1) {
+        let bubble = Object.create(Umo);
+        bubble.init(canvas, getRndColor());
+        bubbles.push(bubble);
+    }
+    repeater();
+};
 
 window.addEventListener('load', initialize);
 
-//Give the Umo's a random color
+//Give the bubble's a random color
 let getRndColor = function() {
     var r = 255*Math.random()|0,
         g = 255*Math.random()|0,
@@ -94,7 +73,7 @@ let getRndColor = function() {
 }
 
 let Umo = {
-    init(canvas, color) {
+    init(canvas) {
     this.canvas = canvas;
     this.x = Math.random() * this.canvas.getWidth();
     this.y = Math.random() * this.canvas.getHeight();
@@ -113,11 +92,9 @@ draw() {
 },
             
 move() {
-    if (this.x + this.dx > this.canvas.getWidth()
-        || this.x + this.dx < 0)
+    if (this.x + this.dx > this.canvas.getWidth() || this.x + this.dx < 0)
     this.dx = -this.dx;
-    if (this.y + this.dy > this.canvas.getHeight()
-        || this.y + this.dy < 0)
+    if (this.y + this.dy > this.canvas.getHeight() || this.y + this.dy < 0)
     this.dy = -this.dy;
             
     this.x += this.dx;

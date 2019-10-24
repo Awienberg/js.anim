@@ -28,17 +28,22 @@ let Canvas = {
     getWidth () {
         return this.canvas.width;
     }
-}
+};
 
-var arr = [];
+var bubbles = [];
 var canvas;
+var COUNT = 10;
 
 var redraw = function () {
     canvas.clear();     // clear canvas
     canvas.prep();      // prep canvas with background color
-    for (let umo of arr) {
-    umo.move();  // change coordinates
-    umo.draw();  // draw again with new coordinates
+    for (let i = 0; i < bubbles.length; i++) {
+        bubbles[i].move();
+        for (let j = i + 1; j < bubbles.length; j++) {
+           if (bubbles[i].hitTest(bubbles[j]));
+           
+        }
+        bubbles[i].draw();
     }
 }
 
@@ -46,46 +51,22 @@ var repeater = function () {
     setInterval(redraw, 10);
 }
 
-//Create Canvas and Umo's
+//Create Canvas and bubbles's
 var initialize = function () {
     canvas = Object.create(Canvas);
     canvas.init('myCanvas', '#000');
-    let bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-             bubble = Object.create(Umo);
-             bubble.init(canvas);
-                arr.push (bubble);
-                repeater();
-}
+    
+    for (let i = 0; i < COUNT; i += 1) {
+        let bubble = Object.create(Umo);
+        bubble.init(canvas, getRndColor());
+        bubbles.push(bubble);
+    }
+    repeater();
+};
 
 window.addEventListener('load', initialize);
 
-//Give the Umo's a random color
+//Give the bubble's a random color
 let getRndColor = function() {
     var r = 255*Math.random()|0,
         g = 255*Math.random()|0,
@@ -113,14 +94,25 @@ draw() {
 },
             
 move() {
-    if (this.x + this.dx > this.canvas.getWidth()
-        || this.x + this.dx < 0)
+    if (this.x + this.dx > this.canvas.getWidth() || this.x + this.dx < 0)
     this.dx = -this.dx;
-    if (this.y + this.dy > this.canvas.getHeight()
-        || this.y + this.dy < 0)
+
+    if (this.y + this.dy > this.canvas.getHeight() || this.y + this.dy < 0)
     this.dy = -this.dy;
             
     this.x += this.dx;
     this.y += this.dy;
 },
+
+getArea() {
+    return Math.PI * Math.pow(this.r, 2);
+},
+
+hitTest(ob) {
+    return Math.sqrt(Math.pow(this.x - ob.x, 2) + Math.pow(this.y - ob.y, 2)) <= (this.r + ob.r)
+},
+
 }
+
+
+
