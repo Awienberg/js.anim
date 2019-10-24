@@ -121,17 +121,17 @@ move() {
             }
         }
     }
-    if (rects.length === 1) {
+    if (rects.length === 15) {
         window.alert('No more objects left :(');
     }
 },
 
 getArea() {
-    return Math.PI * Math.pow(this.r, 2);
+    //return Math.sqrt(Math.pow(this.w, 2) + Math.pow(this.h, 2));
 },
 
 hit(ob) {
-    return Math.sqrt(Math.pow(this.x - ob.x, 2) + Math.pow(this.y - ob.y, 2)) <= (this.r + ob.r)
+    //return Math.sqrt(Math.pow(this.x - ob.x, 2) + Math.pow(this.y - ob.y, 2));
 },
 
 }
