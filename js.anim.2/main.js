@@ -121,7 +121,7 @@ move() {
             }
         }
     }
-    if (rects.length === 15) {
+    if (rects.length === 1 || bubbles.length === 1 ) {
         window.alert('No more objects left :(');
     }
 },

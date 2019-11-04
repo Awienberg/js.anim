@@ -28,7 +28,7 @@ let Canvas = {
     getWidth () {
         return this.canvas.width;
     }
-}
+};
 
 var arr = [];
 var canvas;
@@ -51,10 +51,10 @@ var initialize = function () {
     canvas = Object.create(Canvas);
     canvas.init('myCanvas', '#000');
     let object = Object.create(Umo);
-                object.init(canvas, 'blue', 150, 350, 5); //earth
+                object.init(canvas, 0, 0, 5, 'blue', 0, 2, 390, 190); //earth
                 arr.push(object);
         object = Object.create(Umo);
-                object.init(canvas, 'yellow', 200, 400, 15); //sun
+                object.init(canvas, 0, 0, 5, 'yellow', 0, 0, 0, 0); //sun
                 arr.push(object);
                 repeater();
 
@@ -63,24 +63,29 @@ var initialize = function () {
 window.addEventListener('load', initialize);
 
 let Umo = {
-    init(canvas, color, x, y, r) {
+    init(canvas, x, y, r, color, dg, ddg, rx, ry) {
     this.canvas = canvas;
     this.color = color;
     this.x = x;
     this.y = y;
     this.r = r;
-    //
+    this.dg = dg;
+    this.ddg = ddg;
+    this.rx = rx;
+    this.ry = ry;
 },
 
 draw() {
     this.canvas.getContext().beginPath();
     this.canvas.getContext().fillStyle = this.color;
-    this.canvas.getContext().arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+    this.canvas.getContext().arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
     this.canvas.getContext().fill();
     this.canvas.getContext().closePath();
 },
-            
-move() {
 
-},
-}
+move() { 
+    this.dg += this.ddg;
+    this.x = this.canvas.getWidth() / 2 + this.rx * Math.cos(deg2rad(this.dg));
+    this.y = this.canvas.getHeight() / 2 + this.ry * Math.sin(deg2rad(this.dg));
+    }
+};
